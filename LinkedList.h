@@ -54,6 +54,14 @@ public:
 		}
 	}
 
+	void addNodes(std::vector<int> vector) // This function adds every element of a vector to our list as a node.
+	{
+		for (int elet: vector)
+		{
+			this->addNode(elet);
+		}
+	}
+
 	void deleteNode(int targetData) // This function runs through the list and deletes all nodes with the value given as argument.
 	{
 		if (!l_start) // We ensure that the list is not empty
@@ -62,7 +70,6 @@ public:
 			return;
 		}
 
-		
 		int counter{};
 
 		if (l_start->n_value == targetData) // We delete strings of nodes at the start of the list with the target value.
@@ -90,7 +97,7 @@ public:
 			else
 				current = current->n_next;
 		}
-		std::cout << "Deleted " << counter << " node(s)" << ".\n";
+		std::cout << "Deleted " << counter << " node(s)" << ".\n\n";
 	}
 
 	int nodeCount() // This function returns the number of nodes in a list.
@@ -120,6 +127,7 @@ public:
 			std::cout << "Value: " << current->n_value << ", Adress: " << current << '\n';
 			current = current->n_next;
 		}
+		std::cout << '\n';
 	}
 };
 
