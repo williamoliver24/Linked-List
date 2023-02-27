@@ -54,7 +54,7 @@ public:
 		}
 	}
 
-	void addNodes(std::vector<int> vector) // This function adds every element of a vector to our list as a node.
+	void addNodes(std::vector<int>& vector) // This function adds every element of a vector to our list as a node.
 	{
 		for (int elet: vector)
 		{
