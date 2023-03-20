@@ -1,20 +1,25 @@
 #include <iostream>
 #include <vector>
+#include <cassert>
 #include "LinkedList.h"
 
 int main()
 {
-	std::vector entries{ 1, 2, 3, 2, 4, 34, 2, 45, 2, 3, 1, 0, 100 };
+	std::vector entriesA{ 1, 2, 3, 2, 4, 34, 2};
 
-	LinkedList List;	
+	std::vector entriesB{ 9, 2, 3, 4, 5 };
 
-	List.addNodes(entries);
+	LinkedList ListA;
+	ListA.addNodes(entriesA);
 
-	List.printList();
+	LinkedList ListB;
+	ListB.addNodes(entriesB);
 
-	List.deleteNode(1);
+	ListA += ListB;
 
-	List.printList();
+	ListA.printList();
+
+	std::cout << "The sixth entry in ListA is: " << ListA[5] << '\n';
 
 	return 0;
 }
