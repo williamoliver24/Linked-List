@@ -1,7 +1,6 @@
 #ifndef Classes
 #define Classes
 
-
 class Node // These nodes are the elements of our linked list. Each contains a piece of data (an integer here but we could use any type) and a pointer to the next node in the linked list (a null pointer by default).
 {
 public:
@@ -20,12 +19,25 @@ class LinkedList // Linked lists are strings of nodes, each of which contains a 
 public:
 	Node* l_start;
 
-	LinkedList() // Constructor. Gives us an empty list
+	LinkedList() // Constructor: gives us an empty list.
 	{
 		l_start = nullptr;
 	}
 
-	~LinkedList() // Destructor. Sequentially deletes each node in the list
+	LinkedList(const LinkedList& L) // Copy constructor which does a deep copy
+	{
+		LinkedList final;
+
+		Node* current{ L.l_start };
+
+		while (current)
+		{
+			final.addNode(current->n_value);
+			current = current->n_next;
+		}
+	}
+
+	~LinkedList() // Destructor: sequentially deletes each node in the list.
 	{
 		Node* current{ l_start };
 		while (current)
@@ -62,9 +74,21 @@ public:
 		}
 	}
 
+	void clearList()
+	{
+		Node* temp{ nullptr };
+
+		while (l_start)
+		{
+			temp = l_start;
+			l_start = l_start->n_next;
+			delete temp;
+		}
+	}
+
 	void deleteNode(int targetData) // This function runs through the list and deletes all nodes with the value given as argument.
 	{
-		if (!l_start) // We ensure that the list is not empty
+		if (!l_start) // We ensure that the list is not empty.
 		{
 			std::cout << "List is empty.\n";
 			return;
@@ -104,13 +128,28 @@ public:
 	{
 		Node* current{ l_start };
 		
-		int i{};
+		int counter{};
 		while (current)
 		{
-			++i;
+			++counter;
 			current = current->n_next;
 		}
-		return i;
+		return counter;
+	}
+
+	int targetCount(int target) // This function returns the number of times the target data value occurs in the list.
+	{
+		int counter{};
+		Node* current{ l_start };
+
+		while (current)
+		{
+			if (current->n_value == target)
+				++counter;
+
+			current = current->n_next;
+		}
+		return counter;
 	}
 
 	void printList() // This function prints every value in the list along with its adress to the console.
@@ -129,6 +168,84 @@ public:
 		}
 		std::cout << '\n';
 	}
+
+	// Operator Overloads //
+	friend LinkedList operator+(const LinkedList& a, const LinkedList& b);
+	LinkedList& operator+=(const LinkedList& b);
+	int& operator[](int index);
+	LinkedList& operator=(LinkedList& a);
 };
+
+LinkedList operator+(const LinkedList& a, const LinkedList& b) // This operator overload allows us to concatenate lists using the binary + operator.
+{
+	LinkedList list{};
+
+	Node* current{ a.l_start };
+
+	while(current) // We add every value in the first list to our new list.
+	{
+		list.addNode(current->n_value);
+		current = current->n_next;
+	}
+
+	current = b.l_start;
+
+	while (current) // We add every value in the second list to our new list.
+	{
+		list.addNode(current->n_value);
+		current = current->n_next;
+	}
+
+	return list;
+}
+
+LinkedList& LinkedList::operator+=(const LinkedList& b)
+{
+	Node* current{ b.l_start };
+
+	while(current)
+	{
+		this->addNode(current->n_value);
+		current = current->n_next;
+	}
+
+	return *this;
+}
+
+int& LinkedList::operator[](int index)
+{
+	assert(index >= 0 && index < this->nodeCount());
+
+	int i{};
+	Node* current{ this->l_start };
+	while (current)
+	{
+		if (i == index)
+			return current->n_value;
+
+		current = current->n_next;
+		++i;
+	}
+
+	return current->n_value; // We shouldn't ever reach this point.
+}
+
+LinkedList& LinkedList::operator=(LinkedList& a) // Needs work
+{
+	if (this == &a) // Ensures that we can't break anything by setting a list equal to itself
+		return *this;
+
+	this->clearList();
+
+	Node* current{ a.l_start };
+
+	while (current)
+	{
+		this->addNode(current->n_value);
+		current = current->n_next;
+	}
+
+	return *this;
+}
 
 #endif
