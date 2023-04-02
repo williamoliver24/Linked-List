@@ -230,7 +230,7 @@ int& LinkedList::operator[](int index)
 	return current->n_value; // We shouldn't ever reach this point.
 }
 
-LinkedList& LinkedList::operator=(LinkedList& a) // Needs work
+LinkedList& LinkedList::operator=(LinkedList& a)
 {
 	if (this == &a) // Ensures that we can't break anything by setting a list equal to itself
 		return *this;
